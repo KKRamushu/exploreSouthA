@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>exPlore|SouthA</title>
+    <title>exPloreSouthA</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="shortcut icon" href="travel_favicon.png" type="image/x-icon">
 </head>
 <body>
     <header class="site-header">
-        <nav class="nac-container">
+        <nav class="nav container" aria-label="Main navigation">
             <a href="#home" class="brand">
-                explore<span>SouthA</span>
+                explore<span class="brand-style">SouthA</span>
             </a>
 
-            <ul>
+            <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#packages ">Tour Packages</a></li>
                 <li><a href="#testimonials ">Testimonial</a></li>
@@ -26,7 +26,7 @@
     <main>
         <section class="hero" id="home">
             <div class="hero-content container">
-                <p class="eyebrow">Experiance the extraordinary</p>
+                <p class="eyebrow eyebrow-light">Experiance the extraordinary</p>
                 <h1>Explore South Africa's<br>Best Destinations</h1>
                 <p class="hero-text">
                     Curated travel experiances designed to inspire your spirit and create memories that last a lifetime
@@ -53,11 +53,11 @@
 
                 <div class="package-grid">
                     <article class="package-card">
-                        <div class="package-image"></div>
+                        <div class="package-image image-cape-town"></div>
                         <div class="package-body">
                             <p class="package-meta">⏱ 7 days / 6 nights</p>
                             <h3>Cape Town Escape</h3>
-                            <ul class="package-feature-list">
+                            <ul class="feature-list">
                                 <li>Table Mountain Adventure</li>
                                 <li>Cape Peninsula Tour</li>
                                 <li>Winelands Experience</li>
@@ -73,7 +73,7 @@
                     </article>
 
                     <article class="package-card">
-                        <div class="package-image"></div>
+                        <div class="package-image image-kruger"></div>
                         <div class="package-body">
                             <p class="package-meta">⏱ 5 days / 4 nights</p>
                             <h3>Kruger Safari Quest</h3>
@@ -93,11 +93,11 @@
                     </article>
 
                     <article class="package-card">
-                        <div class="package-image"></div>
+                        <div class="package-image image-garden-route"></div>
                         <div class="package-body">
                             <p class="package-meta">⏱ 8 days / 8 nights</p>
                             <h3>Garden Route Journey</h3>
-                            <ul class="package-feature-list">
+                            <ul class="feature-list">
                                 <li>Knysna &amp; Wilderness</li>
                                 <li>Coastal Road Adventures</li>
                                 <li>Local Food &amp; Culture</li>
@@ -116,11 +116,12 @@
             </div>
         </section>
 
-        <section class="testimonial section" id="testimonials">
+        <section class="testimonials section" id="testimonials">
             <div class="testimonials-content container">
-                <div class="section-heading">
-                    <p class="eyebrow">GUEST REVIEWS</p>
-                    <h3>What Our Travelers Say</h3>
+                <div class="center-heading">
+                    <p class="eyebrow">Guest reviews</p>
+                    <h2>What Our Travelers Say</h2>
+                    <span class="heading-line" aria-hidden="true"></span>
                 </div>
                 <div class="testimonial-grid">
                     <div class="testimonial-card">
@@ -146,7 +147,7 @@
                             in the heart of South Africa.”
                         </blockquote>
                         <div class="traveler">
-                            <span class="avatar"></span>
+                            <span class="avatar avatar-gold"></span>
                             <div>
                                 <strong>David Chen</strong>
                                 <span>Vancouver, Canada</span>
@@ -161,7 +162,7 @@
                             every stop felt carefully chosen.”
                         </blockquote>
                         <div class="traveler">
-                            <span class="avatar"></span>
+                            <span class="avatar avatar-pink"></span>
                             <div>
                                 <strong>Elena Rodriguez</strong>
                                 <span>Madrid, Spain</span>
@@ -175,7 +176,7 @@
         </section>
 
         <section class="plan-section" id="plan">
-            <div class="plan-content container">
+            <div class="plan-container container">
                 <div class="plan">
                     <p class="eyebrow eyebrow-light"> Your next adventure starts here</p>
                     <h2>Ready for your next big adventure?</h2>
@@ -185,19 +186,6 @@
                         No commitment, just possibilities.
                     </p>
                     <div class="stats" aria-label="ExploreSouthA statistics">
-                        <div>
-                            <strong>50+</strong>
-                            <span>Destinations</span>
-                        </div>
-                        <div>
-                            <strong>12k</strong>
-                            <span>Happy Travelers</span>
-                        </div>
-                        <div>
-                            <strong>150+</strong>
-                            <span>Expert Guides</span>
-                        </div>
-                    </div><div class="stats" aria-label="ExploreSouthA statistics">
                         <div>
                             <strong>50+</strong>
                             <span>Destinations</span>
@@ -268,6 +256,12 @@
                 <a href="#plan">Help Center</a>
                 <a href="#packages">Travel Safety</a>
                 <a href="#home">FAQs</a>
+            </div>
+            <div>
+                <h3>Connect</h3>
+                <a href="mailto:hello@exploresoutha.co.za">Email Us</a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+                <a href="#home">Global Coverage</a>
             </div>
         </div>
         <div class="container footer-bottom">

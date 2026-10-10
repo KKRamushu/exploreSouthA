@@ -604,3 +604,158 @@ input {
     color: var(--muted);
     font-size: 0.58rem;
 }
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    .nav {
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 14px;
+    }
+
+    .package-grid,
+    .testimonial-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .package-card:last-child,
+    .testimonial-card:last-child {
+        grid-column: 1 / -1;
+        max-width: calc(50% - 11px);
+        justify-self: center;
+        width: 100%;
+    }
+
+    .plan-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .plan-section {
+        background: var(--navy);
+    }
+}
+
+@media (max-width: 680px) {
+    .site-header {
+        position: static;
+    }
+
+    .nav {
+        padding: 13px 0;
+        flex-wrap: wrap;
+    }
+
+    .brand {
+        margin-right: auto;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 3px;
+        font-size: 0.7rem;
+    }
+
+    .nav-button {
+        font-size: 0.68rem;
+    }
+
+    .hero {
+        min-height: 510px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.4rem, 12vw, 3.5rem);
+    }
+
+    .section,
+    .plan-section {
+        padding: 55px 0;
+    }
+
+    .section-heading {
+        display: block;
+    }
+
+    .text-link {
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+    .package-grid,
+    .testimonial-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .package-card:last-child,
+    .testimonial-card:last-child {
+        grid-column: auto;
+        max-width: none;
+    }
+
+    .package-image {
+        min-height: 210px;
+    }
+
+    .plan-container {
+        gap: 30px;
+    }
+
+    .stats {
+        flex-wrap: wrap;
+        gap: 15px 0;
+    }
+
+    .stats div {
+        flex: 1;
+        min-width: 30%;
+        padding: 0 12px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+
+    .footer-about {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 430px) {
+    .container {
+        width: min(92%, 1180px);
+    }
+
+    .nav-button {
+        padding: 8px 12px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button {
+        width: min(100%, 220px);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
