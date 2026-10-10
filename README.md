@@ -18,6 +18,10 @@ A responsive single-page travel agency website built with plain HTML5 and CSS3.
 
 - `index.html` — page structure and content
 - `styles.css` — all styling and responsive rules
+- hero_background.avif
+- kruger.avif
+- garden_route.jpg
+- cape_town_escape.avif
 
 ## Run locally
 
