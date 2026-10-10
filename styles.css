@@ -25,7 +25,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 70px;
+    scroll-padding-top: 10px;
 }
 
 body {
@@ -115,7 +115,7 @@ input {
     overflow: hidden;
     background:
         linear-gradient(rgba(7, 14, 28, 0.54), rgba(7, 14, 28, 0.70)),
-        url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1800&q=85")
+        url("hero_backround.avif")
         center / cover;
 }
 
@@ -260,19 +260,19 @@ input {
 .image-cape-town {
     background-image:
         linear-gradient(rgba(10, 20, 35, 0.08), rgba(10, 20, 35, 0.08)),
-        url("https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=900&q=80");
+        url("cape_town_escape.avif");
 }
 
 .image-garden-route {
     background-image:
         linear-gradient(rgba(10, 20, 35, 0.08), rgba(10, 20, 35, 0.08)),
-        url("https://www.ulysses.co.za/wp-content/uploads/2016/12/Wine-Cape-570x422.jpg");
+        url("garden_route.jpg");
 }
 
 .image-kruger {
     background-image:
         linear-gradient(rgba(10, 20, 35, 0.04), rgba(10, 20, 35, 0.04)),
-        url("https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=900&q=80");
+        url("kruger.avif");
 }
 
 .package-body {
