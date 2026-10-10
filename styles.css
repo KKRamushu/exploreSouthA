@@ -337,3 +337,270 @@ input {
     font-size: 0.67rem;
     font-weight: 700;
 }
+
+.testimonials {
+    background: #eef0f3;
+}
+
+.center-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.center-heading h2 {
+    font-size: clamp(2rem, 4vw, 2.65rem);
+}
+
+.heading-line {
+    width: 55px;
+    height: 3px;
+    display: block;
+    margin: 15px auto 0;
+    background: var(--orange);
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.testimonial-card {
+    min-height: 235px;
+    padding: 22px 23px;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+ 
+.stars {
+    color: var(--orange);
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+}
+
+.testimonial-card blockquote {
+    margin: 10px 0 20px;
+    color: #686d77;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.65;
+}
+
+.traveler {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    color: var(--white);
+    background: #c99a64;
+    border-radius: 50%;
+    font-size: 0.62rem;
+    font-weight: 800;
+}
+
+.avatar-pink {
+    background: #d75d7d;
+}
+
+.avatar-gold {
+    background: #c8a35a;
+}
+
+.traveler strong,
+.traveler span {
+    display: block;
+}
+
+.traveler strong {
+    font-size: 0.7rem;
+}
+
+.traveler span {
+    color: var(--muted);
+    font-size: 0.58rem;
+}
+
+/* Plan section */
+
+.plan-section {
+    padding: 75px 0;
+    color: var(--white);
+    background:
+        linear-gradient(90deg, var(--navy) 0%, var(--navy) 72%, #252525 72%);
+}
+
+.plan-container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 80px;
+}
+
+.plan h2 {
+    max-width: 500px;
+    font-size: clamp(2.1rem, 4vw, 3.1rem);
+}
+
+.plan > p:not(.eyebrow) {
+    max-width: 530px;
+    margin: 18px 0 24px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.88rem;
+}
+
+.stats {
+    display: flex;
+    gap: 0;
+}
+
+.stats div {
+    padding: 0 22px;
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.stats div:first-child {
+    padding-left: 0;
+}
+
+.stats div:last-child {
+    border-right: 0;
+}
+
+.stats strong,
+.stats span {
+    display: block;
+}
+
+.stats strong {
+    font-size: 1.5rem;
+}
+
+.stats span {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.62rem;
+}
+
+.quote-form {
+    padding: 24px 25px;
+    color: var(--ink);
+    background: var(--white);
+    border-radius: 11px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
+}
+
+.quote-form h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.quote-form > p {
+    margin: 3px 0 20px;
+    color: var(--muted);
+    font-size: 0.65rem;
+}
+
+.quote-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.quote-form input {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    outline: none;
+    color: var(--ink);
+    background: var(--white);
+    font-size: 0.72rem;
+}
+
+.quote-form input:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(246, 160, 0, 0.12);
+}
+
+.form-row {
+    margin: 13px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.button-form {
+    width: 100%;
+    border: 0;
+    cursor: pointer;
+}
+
+.quote-form small {
+    display: block;
+    margin-top: 9px;
+    color: var(--muted);
+    text-align: center;
+    font-size: 0.5rem;
+    line-height: 1.4;
+}
+
+/* Footer */
+
+.site-footer {
+    padding: 40px 0 20px;
+    background: #f7f7f7;
+    color: #60656e;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+
+.footer-about strong {
+    color: var(--ink);
+    font-size: 0.75rem;
+}
+
+.footer-about p {
+    max-width: 300px;
+    font-size: 0.65rem;
+}
+
+.footer-grid h3 {
+    margin: 0 0 9px;
+    color: var(--ink);
+    font-size: 0.7rem;
+}
+
+.footer-grid a {
+    display: block;
+    margin: 5px 0;
+    font-size: 0.65rem;
+}
+
+.footer-bottom {
+    margin-top: 25px;
+    padding-top: 17px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.58rem;
+}
