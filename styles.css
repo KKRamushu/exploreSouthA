@@ -1,0 +1,339 @@
+/***   ExploreSouthA Travel Agency Landing Page     ***/
+
+:root {
+    --navy: rgb(13, 22, 42);
+    --navy-soft: rgb(24, 35, 58);
+    --ink: rgb(37, 42, 53);
+    --muted: rgb(110, 116, 128);
+    --surface: rgb(245, 246, 248);
+    --white: rgb(255, 255, 255);
+    --line: rgb(223, 226, 231);
+    --orange: rgb(246, 160, 0);
+    --orange-dark: rgb(221, 141, 0);
+    --green: rgb(67, 160, 71);
+    --shadow: 0 10px 30px rgba(13, 22, 42, 0.07);
+    --radius: 10px;
+}
+
+/** universal rules **/
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px;
+}
+
+body {
+    margin: 0;
+    color: var(--ink);
+    background: var(--surface);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-weight: 700;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.container {
+    width: min(90%, 1180px);
+    margin-inline: auto;
+}
+
+/* Header */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid var(--line);
+}
+
+.nav {
+    min-height: 62px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.brand span{
+    font-weight: 900;
+    color: var(--orange);   
+}
+
+.nav-links {
+    margin: 0 0 0 auto;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 27px;
+    list-style: none;
+    font-size: 0.78rem;
+}
+
+.nav-links a {
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.footer-grid a:hover {
+    color: var(--orange);
+}
+
+/* Hero */
+
+.hero {
+    min-height: 570px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background:
+        linear-gradient(rgba(7, 14, 28, 0.54), rgba(7, 14, 28, 0.70)),
+        url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1800&q=85")
+        center / cover;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: var(--white);
+    padding: 80px 0;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    color: var(--orange);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.eyebrow-light {
+    color: #ffb11b;
+}
+
+.hero h1 {
+    max-width: 760px;
+    margin: 8px auto 18px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+}
+
+.hero-text {
+    max-width: 650px;
+    margin: 0 auto 30px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    flex-wrap: wrap;
+}
+
+.button {
+    min-width: 140px;
+    padding: 12px 24px;
+}
+
+.button-primary,
+.button-form {
+    color: var(--white);
+    background: var(--orange);
+}
+
+.button-primary:hover,
+.button-form:hover {
+    background: var(--orange-dark);
+}
+
+.button-outline {
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+/* General sections */
+
+.section {
+    padding: 75px 0;
+}
+
+.section-heading {
+    margin-bottom: 38px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 30px;
+}
+
+.section h2,
+.center-heading h2,
+.plan-copy h2 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+}
+
+.section-heading h2 {
+    font-size: clamp(2rem, 4vw, 2.65rem);
+}
+
+.section-intro {
+    max-width: 600px;
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* Tour packages - CSS Grid */
+
+.package-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.package-card {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 15px rgba(13, 22, 42, 0.03);
+}
+
+.package-image {
+    min-height: 225px;
+    position: relative;
+    background-position: center;
+    background-size: cover;
+}
+
+.image-cape-town {
+    background-image:
+        linear-gradient(rgba(10, 20, 35, 0.08), rgba(10, 20, 35, 0.08)),
+        url("https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=900&q=80");
+}
+
+.image-garden-route {
+    background-image:
+        linear-gradient(rgba(10, 20, 35, 0.08), rgba(10, 20, 35, 0.08)),
+        url("https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80");
+}
+
+.image-kruger {
+    background-image:
+        linear-gradient(rgba(10, 20, 35, 0.04), rgba(10, 20, 35, 0.04)),
+        url("https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=900&q=80");
+}
+
+.package-body {
+    flex: 1;
+    padding: 18px 19px 14px;
+}
+
+.package-meta {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 0.7rem;
+}
+
+.package-body h3 {
+    margin: 0 0 10px;
+    font-size: 1.12rem;
+}
+
+.feature-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 0.72rem;
+}
+
+.feature-list li {
+    margin: 5px 0;
+}
+
+.feature-list li::before {
+    content: "*";
+    margin-right: 8px;
+    color: var(--orange);
+    font-weight: 900;
+}
+
+.package-footer {
+    padding: 13px 19px 17px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+}
+
+.package-footer span,
+.package-footer strong {
+    display: block;
+}
+
+.package-footer strong {
+    font-size: 1.15rem;
+}
+
+.package-footer span {
+    color: var(--muted);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.small-button {
+    padding: 7px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 0.67rem;
+    font-weight: 700;
+}
