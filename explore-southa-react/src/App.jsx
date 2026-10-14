@@ -5,6 +5,7 @@ import viteLogo from './assets/vite.svg'
 import './App.css'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
+import TourPackages from './components/TourPackage.jsx'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       <Header />
       <main>
         <Hero />
+        <TourPackages />
       </main>
     </body>
   )
