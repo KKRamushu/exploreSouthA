@@ -1,5 +1,5 @@
-import TourCard from './TourCard'
-import { tours } from '../data/tours'
+import TourCard from './TourCard.jsx'
+import { tours } from '../data/tours.js'
 
 export default function TourPackages() {
 return (
