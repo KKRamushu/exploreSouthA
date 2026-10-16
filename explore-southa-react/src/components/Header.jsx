@@ -10,10 +10,10 @@ export default function Header() {
         <ul class="m-0 ml-auto p-0 flex items-center gap-[27px] list-none text-[0.78rem] 
         *transition-colors *duration-200 ease-in-out *hover:text-[var(--orange)]">
           
-          <li><a href="#home">Home</a></li>
-          <li><a href="#packages">Tour Packages</a></li>
-          <li><a href="#testimonials">Testimonials</a></li>
-          <li><a href="#plan">Plan Your Trip</a></li>
+          <li><a href="#home" class="transition-colors hover:text-emerald-600">Home</a></li>
+          <li><a href="#packages" class="transition-colors hover:text-emerald-600">Tour Packages</a></li>
+          <li><a href="#testimonials" class="transition-colors hover:text-emerald-600">Testimonials</a></li>
+          <li><a href="#plan" class="transition-colors hover:text-emerald-600">Plan Your Trip</a></li>
         </ul>
       </nav>
     </header>
