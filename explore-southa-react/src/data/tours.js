@@ -2,6 +2,7 @@ export const tours = [
 {
 id: 1,
 name: 'Cape Town Escape',
+category:'coastal',
 image: '/images/cape_town_escape.avif',
 duration: '7 days / 6 nights',
 highlights: [
@@ -14,6 +15,7 @@ price: '$1,145.95',
 {
 id: 2,
 name: 'Kruger Safari Quest',
+category:'wildlife',
 image: '/images/kruger.avif',
 duration: '5 days / 4 nights',
 highlights: [
@@ -26,6 +28,7 @@ price: '$1,059.85',
 {
 id: 3,
 name: 'Garden Route Journey',
+category:'coastal',
 image: '/images/garden_route.jpg',
 duration: '8 days / 8 nights',
 highlights: [

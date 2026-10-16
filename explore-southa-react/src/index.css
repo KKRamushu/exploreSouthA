@@ -110,4 +110,17 @@ code {
   background: var(--code-bg);
 }
 
-@import "tailwindcss"
+@import "tailwindcss";
+
+@theme{
+  --color-navy: #0d162a;
+  --color-navy-soft: #18233a;
+  --color-ink: #252a35;
+  --color-muted: #6e7480;
+  --color-surface: #f5f6f8;
+  --color-white: #ffffff;
+  --color-line: #dfe2e7;
+  --color-orange: #f6a000;
+  --color-orange-dark: #dd8d00;
+  --color-green: #43a047;
+}

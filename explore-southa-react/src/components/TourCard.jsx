@@ -1,20 +1,30 @@
-export default function TourCard ({tour}){
-    return (
-        <article>
-        <img src={tour.image} alt={tour.name} />
+import { useState } from 'react'
+import TravelerStepper from './TravelerStepper'
 
-        <h3>{tour.name}</h3>
-        <p>{tour.duration}</p>
+export default function TourCard({ tour }) {
+  const [travelers, setTravelers] = useState(1)
 
-        <ul>
-            {tour.highlights.map((highlight) => (
-            <li key={highlight}>{highlight}</li>
-            ))}
-        </ul>
+  return (
+    <article>
+      <img src={tour.image} alt={tour.name} />
 
-        <p>{tour.price}</p>
+      <h3>{tour.name}</h3>
+      <p>{tour.duration}</p>
 
-        <a href="#plan">Plan This Trip</a>
-        </article>
-    )
+      <ul>
+        {tour.highlights.map((highlight) => (
+          <li key={highlight}>{highlight}</li>
+        ))}
+      </ul>
+
+      <p>{tour.price}</p>
+
+      <TravelerStepper
+        value={travelers}
+        onChange={setTravelers}
+      />
+
+      <a href="#plan">Plan This Trip</a>
+    </article>
+  )
 }

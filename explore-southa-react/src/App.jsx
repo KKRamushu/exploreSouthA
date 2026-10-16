@@ -13,7 +13,7 @@ import Footer from './components/Footer.jsx'
 function App() {
 
   return (
-    <body >
+    <body class="m-0 text-ink bg-surface font-sans leading-relaxed">
       <Header />
       <main>
         <Hero />
