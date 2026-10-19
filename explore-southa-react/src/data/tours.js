@@ -1,0 +1,47 @@
+export const tours = [
+  {
+    id: 'cape-town',
+    name: 'Cape Town Escape',
+    category: 'coastal',
+    duration: '⏱ 7 days / 6 nights',
+    price: '1,145',
+    cents: '95',
+    image: '/images/cape_town_escape.avif',
+    imageAlt: 'Cape Town coastline and surrounding mountains',
+    highlights: [
+      'Table Mountain Adventure',
+      'Cape Peninsula Tour',
+      'Winelands Experience',
+    ],
+  },
+  {
+    id: 'kruger',
+    name: 'Kruger Safari Quest',
+    category: 'wildlife',
+    duration: '⏱ 5 days / 4 nights',
+    price: '1,059',
+    cents: '85',
+    image: '/images/kruger.avif',
+    imageAlt: 'Wildlife on safari in Kruger National Park',
+    highlights: [
+      'Big Five Wildlife Safari',
+      'Private Game Drives',
+      'Luxury Lodge Stay',
+    ],
+  },
+  {
+    id: 'garden-route',
+    name: 'Garden Route Journey',
+    category: 'coastal',
+    duration: '⏱ 8 days / 7 nights',
+    price: '1,475',
+    cents: '90',
+    image: '/images/garden_route.jpg',
+    imageAlt: 'Scenic forest along the Garden Route',
+    highlights: [
+      'Knysna & Wilderness',
+      'Coastal Road Adventures',
+      'Local Food & Culture',
+    ],
+  },
+]
