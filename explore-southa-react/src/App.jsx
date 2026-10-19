@@ -7,6 +7,7 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import TourPackage from './components/TourPackage'
 import Testimonials from './components/Testimonials'
+import PlanYourTrip from './components/PlanYourTrip'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,6 +19,7 @@ function App() {
         <Hero />
         <TourPackage />
         <Testimonials />
+        <PlanYourTrip />
 
       </main>
     </>
