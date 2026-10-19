@@ -1,16 +1,24 @@
 @import "tailwindcss";
 
-@theme{
-  --navy: rgb(13, 22, 42);
-  --navy-soft: rgb(24, 35, 58);
-  --ink: rgb(37, 42, 53);
-  --muted: rgb(110, 116, 128);
-  --surface: rgb(245, 246, 248);
-  --white: rgb(255, 255, 255);
-  --line: rgb(223, 226, 231);
-  --orange: rgb(246, 160, 0);
-  --orange-dark: rgb(221, 141, 0);
-  --green: rgb(67, 160, 71);
-  --shadow: 0 10px 30px rgba(13, 22, 42, 0.07);
-  --radius: 10px;
+@theme {
+  --color-navy: rgb(13, 22, 42);
+  --color-navy-soft: rgb(24, 35, 58);
+  --color-ink: rgb(37, 42, 53);
+  --color-muted: rgb(110, 116, 128);
+  --color-surface: rgb(245, 246, 248);
+  --color-white: rgb(255, 255, 255);
+  --color-line: rgb(223, 226, 231);
+  --color-orange: rgb(246, 160, 0);
+  --color-orange-dark: rgb(221, 141, 0);
+  --color-green: rgb(67, 160, 71);
+  --shadow-soft: 0 10px 30px rgba(13, 22, 42, 0.07);
+  --radius-default: 10px;
+}
+
+body {
+  margin: 0;
+  color: var(--color-ink);
+  background: var(--color-surface);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
 }
