@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "start": "npm --prefix ./server start",
     "db:push": "npm --prefix ./server run db:push --",
     "db:studio": "npm --prefix ./server run db:studio --",
     "db:seed": "npm --prefix ./server run db:seed --"
