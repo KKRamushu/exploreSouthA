@@ -1,0 +1,9 @@
+{
+  "name": "explore-southa-workspace",
+  "private": true,
+  "scripts": {
+    "db:push": "npm --prefix ./explore-southa-react/server run db:push --",
+    "db:studio": "npm --prefix ./explore-southa-react/server run db:studio --",
+    "db:seed": "npm --prefix ./explore-southa-react/server run db:seed --"
+  }
+}
