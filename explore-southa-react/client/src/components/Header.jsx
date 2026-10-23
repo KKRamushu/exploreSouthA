@@ -3,6 +3,7 @@ const links = [
   { href: '#packages', label: 'Tour Packages' },
   { href: '#testimonials', label: 'Testimonials' },
   { href: '#plan', label: 'Plan Your Trip' },
+  { href: '/login', label: 'Sign in' },
 ]
 
 export default function Header() {
