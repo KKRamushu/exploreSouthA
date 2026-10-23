@@ -1,7 +1,46 @@
 import TestimonialCard from './TestimonialCard.jsx'
-import { testimonials } from '../data/testimonials.js'
+import { useEffect, useState } from 'react'
+
+const avatarColors = ['bg-[#c99a64]', 'bg-[#c8a35a]', 'bg-[#d75d7d]']
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    async function loadTestimonials() {
+      try {
+        const response = await fetch('/api/testimonials')
+
+        if (!response.ok) {
+          throw new Error(
+            `Could not load traveler testimonials (${response.status})`,
+          )
+        }
+
+        const data = await response.json()
+        const displayTestimonials = data.map((testimonial, index) => ({
+          ...testimonial,
+          initials: testimonial.name
+            .split(/\s+/)
+            .map((part) => part[0])
+            .join('')
+            .slice(0, 2)
+            .toUpperCase(),
+          avatarColor: avatarColors[index % avatarColors.length],
+        }))
+        setTestimonials(displayTestimonials)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadTestimonials()
+  }, [])
+
   return (
     <section
       id="testimonials"
@@ -20,11 +59,17 @@ export default function Testimonials() {
             className="mx-auto mt-4 block h-[3px] w-[55px] bg-orange"
           />
         </div>
-        <div className="grid grid-cols-1 gap-[22px] md:grid-cols-2 xl:grid-cols-3">
-          {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-          ))}
-        </div>
+
+        {loading && <p role="status">Loading testimonials...</p>}
+        {error && <p role="alert">Could not load testimonials: {error}</p>}
+
+        {!loading && !error && (
+          <div className="grid grid-cols-1 gap-[22px] md:grid-cols-2 xl:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

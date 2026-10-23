@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TourCard from './TourCard.jsx'
-import { tours } from '../data/tours.js'
+
 
 const categories = [
   { id: 'all', label: 'All tours' },
@@ -9,7 +9,45 @@ const categories = [
 ]
 
 export default function TourPackages() {
+
+  const [tours, setTours] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [category, setCategory] = useState('all')
+
+  useEffect(() => {
+  async function loadTours() {
+    try {
+      const response = await fetch('/api/tours')
+
+      if (!response.ok) {
+        throw new Error(`Could not load tours (${response.status})`)
+      }
+
+      const data = await response.json()
+
+      const displayTours = data.map((tour) => {
+        const [wholePrice, cents] = Number(tour.price).toFixed(2).split('.')
+
+        return {
+          ...tour,
+          duration: `⏱ ${tour.durationDays} days / ${tour.durationNights} nights`,
+          price: Number(wholePrice).toLocaleString('en-US'),
+          cents,
+        }
+      })
+
+      setTours(displayTours)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  loadTours()
+}, [])
+
   const filteredTours =
     category === 'all'
       ? tours
@@ -50,11 +88,17 @@ export default function TourPackages() {
           </div>
         </div>
 
+        {loading && <p role="status">Loading tours...</p>}
+
+        {error && <p role="alert">Could not load tours: {error}</p>}
+
+        {!loading && !error && (
         <div className="grid grid-cols-1 gap-[22px] md:grid-cols-2 xl:grid-cols-3">
           {filteredTours.map((tour) => (
             <TourCard key={tour.id} tour={tour} />
           ))}
         </div>
+        )}
       </div>
     </section>
   )
