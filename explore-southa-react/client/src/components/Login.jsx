@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { createAuthClient } from 'better-auth/react'
+import authClient from '../auth-client'
 
 const inputClasses =
   'w-full rounded-md border border-line bg-white px-3 py-2.5 text-sm text-ink outline-none transition focus:border-orange focus:ring-2 focus:ring-orange/15'
-const authClient = createAuthClient({ baseURL: window.location.origin })
 
 export default function Login() {
   const {

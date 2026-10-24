@@ -1,15 +1,36 @@
 import { useState } from 'react'
+import authClient from '../auth-client'
 
 const links = [
   { href: '#home', label: 'Home' },
   { href: '#packages', label: 'Tour Packages' },
   { href: '#testimonials', label: 'Testimonials' },
   { href: '#plan', label: 'Plan Your Trip' },
-  { href: '/login', label: 'Sign in' },
 ]
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
+  const [signOutError, setSignOutError] = useState('')
+  const { data: session, refetch: refreshSession } = authClient.useSession()
+
+  async function handleSignOut() {
+    setSigningOut(true)
+    setSignOutError('')
+
+    try {
+      const result = await authClient.signOut()
+      if (result.error) {
+        throw new Error(result.error.message)
+      }
+      await refreshSession()
+      setMenuOpen(false)
+    } catch (error) {
+      setSignOutError(error.message)
+    } finally {
+      setSigningOut(false)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur">
@@ -63,8 +84,33 @@ export default function Header() {
               </a>
             </li>
           ))}
+          <li className="shrink-0">
+            {session?.user ? (
+              <button
+                type="button"
+                className="block w-full rounded px-3 py-2 text-left transition-colors hover:bg-surface hover:text-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange disabled:cursor-wait disabled:opacity-60 sm:px-0 sm:py-1 sm:text-xs sm:hover:bg-transparent"
+                disabled={signingOut}
+                onClick={handleSignOut}
+              >
+                {signingOut ? 'Signing out...' : 'Sign out'}
+              </button>
+            ) : (
+              <a
+                href="/login"
+                className="block rounded px-3 py-2 transition-colors hover:bg-surface hover:text-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange sm:px-0 sm:py-1 sm:hover:bg-transparent"
+                onClick={() => setMenuOpen(false)}
+              >
+                Sign in
+              </a>
+            )}
+          </li>
         </ul>
       </nav>
+      {signOutError && (
+        <p className="mx-auto w-[min(90%,1180px)] pb-2 text-sm text-red-700" role="alert">
+          Could not sign out: {signOutError}
+        </p>
+      )}
     </header>
   )
 }
