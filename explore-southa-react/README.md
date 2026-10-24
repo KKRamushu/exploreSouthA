@@ -2,6 +2,30 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Deploying to Render
+
+Create a **Web Service** for this repository with the following settings:
+
+- **Root Directory:** `explore-southa-react`
+- **Build Command:** `npm run build`
+- **Start Command:** `npm start`
+
+The build command installs the server and client dependencies and creates the
+client production bundle. The server serves that bundle and the API from the
+same Render service.
+
+Set these environment variables in Render:
+
+- `DATABASE_URL`: the connection string for the working PostgreSQL database
+- `BETTER_AUTH_SECRET`: a long, random secret
+- `BETTER_AUTH_URL`: the service's public HTTPS URL, such as
+  `https://your-service.onrender.com`
+- `CLIENT_URL`: the same public HTTPS origin as `BETTER_AUTH_URL`
+- `ADMIN_EMAILS` (optional): comma-separated administrator email addresses
+
+Use the service URL without a trailing slash for `BETTER_AUTH_URL` and
+`CLIENT_URL`. After changing environment variables, redeploy the service.
+
 ## API server
 
 Start the Express API from the repository root with `npm start`. The API uses

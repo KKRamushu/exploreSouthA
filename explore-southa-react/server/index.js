@@ -55,6 +55,17 @@ async function createApp() {
     createTripInquiriesRouter({ auth, db, betterAuthNode }),
   );
 
+  const clientDist = path.resolve(__dirname, "../client/dist");
+  app.use(express.static(clientDist));
+  app.get("/{*splat}", (request, response, next) => {
+    if (request.path.startsWith("/api")) {
+      next();
+      return;
+    }
+
+    response.sendFile(path.join(clientDist, "index.html"));
+  });
+
   app.use((_request, response) => {
     response.status(404).json({ error: "Route not found." });
   });
