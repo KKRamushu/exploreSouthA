@@ -1,62 +1,132 @@
-# React + Vite
+# ExploreSouthA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Discover South Africa. Travel your way.**
 
-## Deploying to Render
+ExploreSouthA is a travel experience website for discovering curated South
+African tours, reading traveler testimonials, and exploring trip-planning
+options. Its responsive React frontend is served alongside an Express API,
+with tour and testimonial content stored in PostgreSQL.
 
-Create a **Web Service** for this repository with the following settings:
+## Highlights
 
-- **Root Directory:** `explore-southa-react`
-- **Build Command:** `npm run build`
-- **Start Command:** `npm start`
+- Browse featured tours and filter by coastal or wildlife experiences.
+- Explore traveler testimonials and trip-planning information.
+- Sign up, sign in, and manage sessions with Better Auth.
+- Manage tours, testimonials, users, and trip inquiries through protected API
+  routes.
+- Serve the production website and API from a single service.
 
-The build command installs the server and client dependencies and creates the
-client production bundle. The server serves that bundle and the API from the
-same Render service.
+## Technology
 
-Set these environment variables in Render:
+| Area | Tools |
+| --- | --- |
+| Frontend | React, Vite, Tailwind CSS |
+| API | Node.js, Express |
+| Database | PostgreSQL, Drizzle ORM |
+| Authentication | Better Auth |
 
-- `DATABASE_URL`: the connection string for the working PostgreSQL database
-- `BETTER_AUTH_SECRET`: a long, random secret
-- `BETTER_AUTH_URL`: the service's public HTTPS URL, such as
-  `https://your-service.onrender.com`
-- `CLIENT_URL`: the same public HTTPS origin as `BETTER_AUTH_URL`
-- `ADMIN_EMAILS` (optional): comma-separated administrator email addresses
+## Run locally
 
-Use the service URL without a trailing slash for `BETTER_AUTH_URL` and
-`CLIENT_URL`. After changing environment variables, redeploy the service.
+### Prerequisites
 
-## API server
+- Node.js and npm
+- A PostgreSQL database
 
-Start the Express API from the repository root with `npm start`. The API uses
-the server's `.env` file and listens on the configured `PORT` (default `3000`).
-Set `ADMIN_EMAILS` there to a comma-separated list of account emails allowed
-to create, update, and delete tours and testimonials, and to manage trip
-inquiries. Restart the server after changing this setting.
+### Configure the server
 
-Better Auth handles sign-up, sign-in, sign-out, sessions, accounts, and
-verification through `/api/auth/*`. The API also provides:
+Create `server/.env` and set the following values:
 
-| Route | Access | Operations |
+```env
+DATABASE_URL=postgresql://user:password@host:5432/database
+BETTER_AUTH_SECRET=replace-with-a-long-random-secret
+BETTER_AUTH_URL=http://localhost:3000
+CLIENT_URL=http://localhost:5173
+ADMIN_EMAILS=admin@example.com
+```
+
+`ADMIN_EMAILS` is optional. Set it to a comma-separated list of email
+addresses that should have administrator access.
+
+### Install and start
+
+From the `explore-southa-react` directory, install the client and server
+dependencies:
+
+```bash
+npm --prefix server ci
+npm --prefix client ci
+```
+
+If the database schema has not been applied yet, run:
+
+```bash
+npm run db:push
+```
+
+Start the API and frontend in separate terminals:
+
+```bash
+npm start
+```
+
+```bash
+npm --prefix client run dev
+```
+
+Open `http://localhost:5173`. The Vite development server forwards `/api`
+requests to the API at `http://localhost:3000`.
+
+## Deploy to Render
+
+Create a **Web Service** connected to this repository and configure:
+
+| Setting | Value |
+| --- | --- |
+| Root Directory | `explore-southa-react` |
+| Build Command | `npm run build` |
+| Start Command | `npm start` |
+
+Set these environment variables in the Render service:
+
+| Variable | Value |
+| --- | --- |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | A long, random secret |
+| `BETTER_AUTH_URL` | The service's public HTTPS URL |
+| `CLIENT_URL` | The same public HTTPS origin as `BETTER_AUTH_URL` |
+| `ADMIN_EMAILS` | Optional comma-separated administrator email addresses |
+
+Use the same public URL without a trailing slash for `BETTER_AUTH_URL` and
+`CLIENT_URL`. Render supplies `PORT` automatically. Redeploy after changing
+environment variables.
+
+## API overview
+
+All application routes are prefixed with `/api`.
+
+| Route | Access | Purpose |
 | --- | --- | --- |
-| `/api/users/me` | Signed in | Read the current user |
-| `/api/users` | Administrator | List users (safe profile fields only) |
-| `/api/tours` | Public read; administrator write | List, read, create, update, delete |
-| `/api/testimonials` | Public read; administrator write | List, read, create, update, delete |
-| `/api/trip-inquiries` | Public create; administrator read/write | Create, list, read, update, delete |
+| `/api/health` | Public | Check API availability |
+| `/api/auth/*` | Public, with session-based access where required | Sign up, sign in, sign out, and manage authentication |
+| `/api/users/me` | Signed in | Read the current user's profile |
+| `/api/users` | Administrator | List user profile information |
+| `/api/tours` | Public read; administrator write | Browse and manage tours |
+| `/api/testimonials` | Public read; administrator write | Browse and manage testimonials |
+| `/api/trip-inquiries` | Public create; administrator read/write | Create and manage trip inquiries |
 
-Sessions, accounts, and verification records do not have public CRUD routes;
-they are managed by Better Auth.
+Authentication records are managed by Better Auth and are not exposed through
+public CRUD routes.
 
-Currently, two official plugins are available:
+## Project structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```text
+explore-southa-react/
+├── client/                 # React application and Vite configuration
+├── server/
+│   ├── db/                 # Drizzle schema and database setup
+│   ├── routes/             # API route handlers
+│   ├── auth.js             # Better Auth configuration
+│   └── index.js            # Express application and server entry point
+├── package.json            # Root build, start, and database commands
+└── README.md
+```
