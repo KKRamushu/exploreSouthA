@@ -7,6 +7,7 @@ const cors = require("cors");
 const express = require("express");
 const authPromise = require("./auth");
 const { db } = require("./db");
+const createCheckoutSessionsRouter = require("./routes/checkout-sessions");
 const createToursRouter = require("./routes/tours");
 const createTestimonialsRouter = require("./routes/testimonials");
 const createTripInquiriesRouter = require("./routes/trip-inquiries");
@@ -45,6 +46,10 @@ async function createApp() {
     response.json({ status: "ok" });
   });
   app.use("/api/users", createUsersRouter({ auth, db, betterAuthNode }));
+  app.use(
+    "/api/checkout-sessions",
+    createCheckoutSessionsRouter({ db }),
+  );
   app.use("/api/tours", createToursRouter({ auth, db, betterAuthNode }));
   app.use(
     "/api/testimonials",

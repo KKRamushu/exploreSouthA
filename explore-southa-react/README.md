@@ -115,6 +115,7 @@ All application routes are prefixed with `/api`.
 | `/api/auth/*` | Public, with session-based access where required | Sign up, sign in, sign out, and manage authentication |
 | `/api/users/me` | Signed in | Read the current user's profile |
 | `/api/users` | Administrator | List user profile information |
+| `/api/checkout-sessions` | Public | Create a Stripe Checkout session for a tour |
 | `/api/tours` | Public read; administrator write | Browse and manage tours |
 | `/api/testimonials` | Public read; administrator write | Browse and manage testimonials |
 | `/api/trip-inquiries` | Public create; administrator read/write | Create and manage trip inquiries |
