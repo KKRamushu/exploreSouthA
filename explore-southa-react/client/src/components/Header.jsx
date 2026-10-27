@@ -4,11 +4,13 @@ import authClient from '../auth-client'
 const links = [
   { href: '#home', label: 'Home' },
   { href: '#packages', label: 'Packages' },
+  { href: '/cart', label: 'Trip Cart' },
   { href: '#testimonials', label: 'Testimonials' },
   { href: '#plan', label: 'Plan-Trip' },
 ]
 
-export default function Header() {
+export default function Header({ cartCount = 0 }) {
+  const onCartPage = window.location.pathname === '/cart'
   const [menuOpen, setMenuOpen] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
   const [signOutError, setSignOutError] = useState('')
@@ -39,7 +41,7 @@ export default function Header() {
         className="relative mx-auto flex min-h-[62px] w-[min(90%,1180px)] items-center justify-between sm:gap-7"
       >
         <a
-          href="#home"
+          href={onCartPage ? '/#home' : '#home'}
           className="shrink-0 font-bold italic text-ink transition-colors hover:text-orange"
           onClick={() => setMenuOpen(false)}
         >
@@ -76,11 +78,17 @@ export default function Header() {
           {links.map(({ href, label }) => (
             <li key={href} className="shrink-0">
               <a
-                href={href}
+                href={
+                  href === '/cart' || !onCartPage
+                    ? href
+                    : `/${href}`
+                }
                 className="block rounded px-3 py-2 transition-colors hover:bg-surface hover:text-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange sm:px-0 sm:py-1 sm:hover:bg-transparent"
                 onClick={() => setMenuOpen(false)}
               >
-                {label}
+                {label === 'Trip Cart' && cartCount > 0
+                  ? `${label} (${cartCount})`
+                  : label}
               </a>
             </li>
           ))}

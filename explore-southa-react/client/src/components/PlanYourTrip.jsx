@@ -3,11 +3,24 @@ import { useState } from 'react'
 const inputClasses =
   'w-full min-w-0 rounded-md border border-line bg-white px-3 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/70 focus:border-orange focus:ring-2 focus:ring-orange/15'
 
-export default function PlanYourTrip() {
+function localDateString() {
+  const today = new Date()
+  const year = today.getFullYear()
+  const month = String(today.getMonth() + 1).padStart(2, '0')
+  const day = String(today.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+export default function PlanYourTrip({ plannedTrip, onAddToCart }) {
+  const [travelers, setTravelers] = useState(plannedTrip?.travelers ?? 1)
+  const [travelDate, setTravelDate] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
+    if (!plannedTrip || !travelDate) return
+
+    onAddToCart(plannedTrip.tour, travelers, travelDate)
     setSubmitted(true)
   }
 
@@ -25,9 +38,9 @@ export default function PlanYourTrip() {
             Ready for your next big adventure?
           </h2>
           <p className="mb-6 mt-4 max-w-[530px] text-sm text-white/75">
-            Tell us where you want to go and our travel consultants will craft a
-            personalized itinerary just for you. No commitment, just
-            possibilities.
+            Choose a tour, confirm the number of travelers, and select your
+            travel date. You can review your plans in the trip cart before
+            paying.
           </p>
           <div
             className="flex flex-wrap gap-x-0 gap-y-4"
@@ -54,36 +67,49 @@ export default function PlanYourTrip() {
           onChange={() => setSubmitted(false)}
           className="rounded-[11px] bg-white p-6 text-ink shadow-2xl sm:p-7"
         >
-          <h3 className="text-xl font-bold">Get a Custom Quote</h3>
+          <h3 className="text-xl font-bold">Plan Your Trip</h3>
           <p className="mb-5 mt-1 text-xs text-muted">
-            Response within 24 hours.
+            {plannedTrip
+              ? 'Your selected tour is ready. Choose a travel date to add it to your cart.'
+              : 'Choose a tour package first to start planning.'}
           </p>
 
           <label
             htmlFor="destination"
             className="mb-1 block text-xs font-extrabold uppercase"
           >
-            Where do you want to go?
+            Selected tour
           </label>
           <input
-            className={inputClasses}
+            className={`${inputClasses} read-only:bg-surface`}
             id="destination"
             name="destination"
             type="text"
-            placeholder="e.g. Cape Town, Kruger"
-            autoComplete="off"
+            value={plannedTrip?.tour.name ?? ''}
+            placeholder="Select a tour package first"
+            readOnly
             required
           />
 
           <div className="my-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div>
               <label
-                htmlFor="month"
+                htmlFor="travel-date"
                 className="mb-1 block text-xs font-extrabold uppercase"
               >
-                Preferred month
+                Travel date
               </label>
-              <input className={inputClasses} id="month" name="month" type="month" />
+              <input
+                className={inputClasses}
+                id="travel-date"
+                name="travelDate"
+                type="date"
+                min={localDateString()}
+                value={travelDate}
+                onChange={(event) => setTravelDate(event.target.value)}
+                disabled={!plannedTrip}
+                required
+              />
             </div>
             <div>
               <label
@@ -98,25 +124,28 @@ export default function PlanYourTrip() {
                 name="travelers"
                 type="number"
                 min="1"
-                defaultValue="2"
+                step="1"
+                value={travelers}
+                onChange={(event) => setTravelers(Number(event.target.value))}
+                disabled={!plannedTrip}
                 required
               />
             </div>
           </div>
 
           <button
-            className="w-full rounded-full bg-orange px-6 py-3 text-sm font-bold text-white transition hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange"
+            className="w-full rounded-full bg-orange px-6 py-3 text-sm font-bold text-white transition hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange disabled:cursor-not-allowed disabled:opacity-60"
             type="submit"
+            disabled={!plannedTrip || submitted}
           >
-            Plan Your Trip
+            {submitted ? 'Added to Trip Cart' : 'Add Trip to Cart'}
           </button>
-          <small className="mt-3 block text-center text-[0.65rem] leading-snug text-muted">
-            By submitting this form, you agree to our privacy policy and consent
-            to being contacted regarding your travel enquiry.
-          </small>
           {submitted && (
             <p className="mt-3 text-center text-sm font-semibold text-green" role="status">
-              Thanks! Your trip preferences are ready for our travel team.
+              Trip added.{' '}
+              <a className="underline" href="/cart">
+                Review your trip cart
+              </a>
             </p>
           )}
         </form>

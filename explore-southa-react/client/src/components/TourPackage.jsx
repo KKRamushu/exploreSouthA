@@ -8,7 +8,7 @@ const categories = [
   { id: 'wildlife', label: 'Wildlife' },
 ]
 
-export default function TourPackages() {
+export default function TourPackages({ onPlanTrip }) {
 
   const [tours, setTours] = useState([])
   const [loading, setLoading] = useState(true)
@@ -34,6 +34,7 @@ export default function TourPackages() {
           duration: `⏱ ${tour.durationDays} days / ${tour.durationNights} nights`,
           price: Number(wholePrice).toLocaleString('en-US'),
           cents,
+          priceInCents: Math.round(Number(tour.price) * 100),
         }
       })
 
@@ -95,7 +96,7 @@ export default function TourPackages() {
         {!loading && !error && (
         <div className="grid grid-cols-1 gap-[22px] md:grid-cols-2 xl:grid-cols-3">
           {filteredTours.map((tour) => (
-            <TourCard key={tour.id} tour={tour} />
+            <TourCard key={tour.id} tour={tour} onPlanTrip={onPlanTrip} />
           ))}
         </div>
         )}

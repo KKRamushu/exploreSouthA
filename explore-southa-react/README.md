@@ -115,13 +115,20 @@ All application routes are prefixed with `/api`.
 | `/api/auth/*` | Public, with session-based access where required | Sign up, sign in, sign out, and manage authentication |
 | `/api/users/me` | Signed in | Read the current user's profile |
 | `/api/users` | Administrator | List user profile information |
-| `/api/checkout-sessions` | Public | Create a Stripe Checkout session for a tour |
+| `/api/checkout-sessions` | Public | Create a Stripe Checkout session for the tours in the cart |
 | `/api/tours` | Public read; administrator write | Browse and manage tours |
 | `/api/testimonials` | Public read; administrator write | Browse and manage testimonials |
 | `/api/trip-inquiries` | Public create; administrator read/write | Create and manage trip inquiries |
 
 Authentication records are managed by Better Auth and are not exposed through
 public CRUD routes.
+
+Select a tour and traveler count to prefill the Plan Your Trip form, choose a
+travel date, and add the dated trip to the cart. The client trip cart is
+available at `/cart` and is saved in the browser so it survives page navigation
+and refreshes. Checkout requests send tour IDs, traveler counts, and required
+travel dates; the API reloads current prices from the database before creating
+one Stripe Checkout Session for the full cart.
 
 ## Project structure
 

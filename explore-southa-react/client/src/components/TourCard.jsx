@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import TravelerStepper from './TravelerStepper.jsx'
 
-export default function TourCard({ tour }) {
+export default function TourCard({ tour, onPlanTrip }) {
   const [travelers, setTravelers] = useState(1)
 
   return (
@@ -36,12 +36,13 @@ export default function TourCard({ tour }) {
                 <sup className="text-xs">{tour.cents}</sup>
               </p>
             </div>
-            <a
-              href="#plan"
-              className="rounded-full border border-line px-4 py-2 text-xs font-bold transition hover:border-orange hover:text-orange focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange"
+            <button
+              type="button"
+              onClick={() => onPlanTrip(tour, travelers)}
+              className="rounded-full bg-orange px-4 py-2 text-xs font-bold text-white transition hover:bg-orange-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange"
             >
-              View Details
-            </a>
+              Plan this trip
+            </button>
           </div>
           <div className="mt-4 flex items-center justify-between border-t border-line pt-3">
             <span className="text-xs font-semibold text-muted">Travelers</span>
