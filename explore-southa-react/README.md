@@ -42,10 +42,14 @@ BETTER_AUTH_SECRET=replace-with-a-long-random-secret
 BETTER_AUTH_URL=http://localhost:3000
 CLIENT_URL=http://localhost:5173
 ADMIN_EMAILS=admin@example.com
+STRIPE_SECRET_KEY=sk_test_...
 ```
 
 `ADMIN_EMAILS` is optional. Set it to a comma-separated list of email
 addresses that should have administrator access.
+Use a Stripe test-mode secret key for local development. Keep this key in
+`server/.env` or your hosting provider's environment settings; never put it in
+the client or commit it to source control.
 
 ### Install and start
 
@@ -95,6 +99,7 @@ Set these environment variables in the Render service:
 | `BETTER_AUTH_URL` | The service's public HTTPS URL |
 | `CLIENT_URL` | The same public HTTPS origin as `BETTER_AUTH_URL` |
 | `ADMIN_EMAILS` | Optional comma-separated administrator email addresses |
+| `STRIPE_SECRET_KEY` | Stripe secret key; use a live-mode key only for production payments |
 
 Use the same public URL without a trailing slash for `BETTER_AUTH_URL` and
 `CLIENT_URL`. Render supplies `PORT` automatically. Redeploy after changing
