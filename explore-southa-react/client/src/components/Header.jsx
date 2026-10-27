@@ -3,9 +3,9 @@ import authClient from '../auth-client'
 
 const links = [
   { href: '#home', label: 'Home' },
-  { href: '#packages', label: 'Tour Packages' },
+  { href: '#packages', label: 'Packages' },
   { href: '#testimonials', label: 'Testimonials' },
-  { href: '#plan', label: 'Plan Your Trip' },
+  { href: '#plan', label: 'Plan-Trip' },
 ]
 
 export default function Header() {
