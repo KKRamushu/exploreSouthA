@@ -10,6 +10,7 @@ const {
   timestamp,
   varchar,
   numeric,
+  jsonb,
 } = require("drizzle-orm/pg-core");
 const { sql } = require("drizzle-orm");
 
@@ -20,6 +21,13 @@ const inquiryStatus = pgEnum("inquiry_status", [
   "contacted",
   "quoted",
   "booked",
+]);
+
+const bookingStatus = pgEnum("booking_status", [
+  "pending",
+  "paid",
+  "payment_failed",
+  "expired",
 ]);
 
 const users = pgTable("users", {
@@ -161,6 +169,32 @@ const tripInquiries = pgTable(
   ],
 );
 
+const bookings = pgTable(
+  "bookings",
+  {
+    id: serial("id").primaryKey(),
+    stripeSessionId: varchar("stripe_session_id", { length: 255 })
+      .notNull()
+      .unique(),
+    status: bookingStatus("status").notNull().default("pending"),
+    amountTotal: integer("amount_total").notNull(),
+    currency: varchar("currency", { length: 3 }).notNull().default("usd"),
+    items: jsonb("items").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    paidAt: timestamp("paid_at", { withTimezone: true }),
+  },
+  (table) => [
+    index("bookings_status_idx").on(table.status),
+    check("bookings_amount_total_positive", sql`${table.amountTotal} > 0`),
+    check("bookings_currency_usd", sql`${table.currency} = 'usd'`),
+  ],
+);
+
 const testimonials = pgTable(
   "testimonials",
   {
@@ -184,11 +218,13 @@ const testimonials = pgTable(
 module.exports = {
   tourCategory,
   inquiryStatus,
+  bookingStatus,
   users,
   sessions,
   accounts,
   verifications,
   tours,
   tripInquiries,
+  bookings,
   testimonials,
 };

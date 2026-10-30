@@ -1,6 +1,6 @@
 const { inArray } = require("drizzle-orm");
 const { Router } = require("express");
-const { tours } = require("../db/schema");
+const { bookings, tours } = require("../db/schema");
 const { getStripeClient } = require("../stripe");
 const { isObject, parseFields } = require("./validation");
 
@@ -100,6 +100,7 @@ function createCheckoutSessionsRouter({
     }
 
     const lineItems = [];
+    const bookingItems = [];
     let totalInCents = 0;
     for (const item of requestedItems) {
       const tour = toursById.get(item.tourId);
@@ -137,6 +138,13 @@ function createCheckoutSessionsRouter({
         },
         quantity: item.travelers,
       });
+      bookingItems.push({
+        tourId: tour.id,
+        tourName: tour.name,
+        travelDate: item.travelDate,
+        travelers: item.travelers,
+        unitAmount,
+      });
     }
 
     const baseUrl = clientUrl.split(",")[0].trim().replace(/\/+$/, "");
@@ -155,6 +163,17 @@ function createCheckoutSessionsRouter({
       response.status(502).json({ error: "Stripe did not return a checkout URL." });
       return;
     }
+    if (typeof session.id !== "string" || session.id.length > 255) {
+      response.status(502).json({ error: "Stripe returned an invalid checkout session." });
+      return;
+    }
+
+    await db.insert(bookings).values({
+      stripeSessionId: session.id,
+      amountTotal: totalInCents,
+      currency: "usd",
+      items: bookingItems,
+    });
 
     response.status(201).json({ url: session.url });
   });

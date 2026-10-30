@@ -12,6 +12,7 @@ const createToursRouter = require("./routes/tours");
 const createTestimonialsRouter = require("./routes/testimonials");
 const createTripInquiriesRouter = require("./routes/trip-inquiries");
 const createUsersRouter = require("./routes/users");
+const createStripeWebhookRouter = require("./routes/stripe-webhook");
 
 async function createApp() {
   const [auth, betterAuthNode] = await Promise.all([
@@ -41,6 +42,11 @@ async function createApp() {
   app.all("/api/auth", authHandler);
   app.all("/api/auth/*splat", authHandler);
 
+  app.use(
+    "/api/stripe/webhook",
+    express.raw({ type: "application/json" }),
+    createStripeWebhookRouter({ db }),
+  );
   app.use(express.json({ limit: "100kb" }));
   app.get("/api/health", (_request, response) => {
     response.json({ status: "ok" });

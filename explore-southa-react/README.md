@@ -43,6 +43,7 @@ BETTER_AUTH_URL=http://localhost:3000
 CLIENT_URL=http://localhost:5173
 ADMIN_EMAILS=admin@example.com
 STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
 `ADMIN_EMAILS` is optional. Set it to a comma-separated list of email
@@ -50,6 +51,13 @@ addresses that should have administrator access.
 Use a Stripe test-mode secret key for local development. Keep this key in
 `server/.env` or your hosting provider's environment settings; never put it in
 the client or commit it to source control.
+For local webhook testing, run this with the Stripe CLI:
+
+```bash
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+```
+
+Set the printed `whsec_...` signing secret as `STRIPE_WEBHOOK_SECRET`.
 
 ### Install and start
 
@@ -61,7 +69,7 @@ npm --prefix server ci
 npm --prefix client ci
 ```
 
-If the database schema has not been applied yet, run:
+Apply the database schema (including the bookings table) with:
 
 ```bash
 npm run db:push
@@ -100,10 +108,14 @@ Set these environment variables in the Render service:
 | `CLIENT_URL` | The same public HTTPS origin as `BETTER_AUTH_URL` |
 | `ADMIN_EMAILS` | Optional comma-separated administrator email addresses |
 | `STRIPE_SECRET_KEY` | Stripe secret key; use a live-mode key only for production payments |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret for the configured Stripe webhook endpoint |
 
 Use the same public URL without a trailing slash for `BETTER_AUTH_URL` and
 `CLIENT_URL`. Render supplies `PORT` automatically. Redeploy after changing
-environment variables.
+environment variables. Configure a Stripe webhook for
+`https://<your-service-url>/api/stripe/webhook` and subscribe to
+`checkout.session.completed`. Use the endpoint's signing secret for
+`STRIPE_WEBHOOK_SECRET`.
 
 ## API overview
 
@@ -116,6 +128,7 @@ All application routes are prefixed with `/api`.
 | `/api/users/me` | Signed in | Read the current user's profile |
 | `/api/users` | Administrator | List user profile information |
 | `/api/checkout-sessions` | Public | Create a Stripe Checkout session for the tours in the cart |
+| `/api/stripe/webhook` | Stripe signature required | Verify and acknowledge Stripe webhook events |
 | `/api/tours` | Public read; administrator write | Browse and manage tours |
 | `/api/testimonials` | Public read; administrator write | Browse and manage testimonials |
 | `/api/trip-inquiries` | Public create; administrator read/write | Create and manage trip inquiries |
@@ -129,6 +142,12 @@ available at `/cart` and is saved in the browser so it survives page navigation
 and refreshes. Checkout requests send tour IDs, traveler counts, and required
 travel dates; the API reloads current prices from the database before creating
 one Stripe Checkout Session for the full cart.
+
+The webhook endpoint verifies Stripe signatures and acknowledges valid events.
+Checkout creates a pending booking with a snapshot of the selected tours,
+travel dates, traveler counts, and USD total. Verified webhook events update
+that booking to paid, payment failed, or expired; repeated events do not
+downgrade a paid booking.
 
 ## Project structure
 
