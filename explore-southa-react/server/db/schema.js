@@ -28,6 +28,7 @@ const bookingStatus = pgEnum("booking_status", [
   "paid",
   "payment_failed",
   "expired",
+  "cancellation_requested",
 ]);
 
 const users = pgTable("users", {

@@ -59,8 +59,15 @@ function createStripeWebhookRouter({
       const sessionCondition = eq(bookings.stripeSessionId, session.id);
       const statusCondition =
         update.status === "paid"
-          ? sessionCondition
-          : and(sessionCondition, ne(bookings.status, "paid"));
+          ? and(
+              sessionCondition,
+              ne(bookings.status, "cancellation_requested"),
+            )
+          : and(
+              sessionCondition,
+              ne(bookings.status, "paid"),
+              ne(bookings.status, "cancellation_requested"),
+            );
       const updated = await db
         .update(bookings)
         .set({ ...update, updatedAt: new Date() })

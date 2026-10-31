@@ -127,7 +127,7 @@ All application routes are prefixed with `/api`.
 | `/api/auth/*` | Public, with session-based access where required | Sign up, sign in, sign out, and manage authentication |
 | `/api/users/me` | Signed in | Read the current user's profile |
 | `/api/users` | Administrator | List user profile information |
-| `/api/checkout-sessions` | Public | Create a Stripe Checkout session for the tours in the cart |
+| `/api/checkout-sessions` | Public | Create a Stripe Checkout session or check its booking status |
 | `/api/stripe/webhook` | Stripe signature required | Verify and acknowledge Stripe webhook events |
 | `/api/tours` | Public read; administrator write | Browse and manage tours |
 | `/api/testimonials` | Public read; administrator write | Browse and manage testimonials |
@@ -147,7 +147,12 @@ The webhook endpoint verifies Stripe signatures and acknowledges valid events.
 Checkout creates a pending booking with a snapshot of the selected tours,
 travel dates, traveler counts, and USD total. Verified webhook events update
 that booking to paid, payment failed, or expired; repeated events do not
-downgrade a paid booking.
+downgrade a paid booking. Customers can submit a cancellation request for a
+paid booking; this records the request for follow-up and does not issue an
+automatic refund. When the customer returns from Stripe while a booking is
+still pending, the status endpoint also checks the session directly with Stripe
+and reconciles a matching paid amount and currency, so confirmation does not
+depend solely on webhook delivery timing.
 
 ## Project structure
 

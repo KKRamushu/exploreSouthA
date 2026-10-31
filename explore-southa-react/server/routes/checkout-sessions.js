@@ -1,4 +1,4 @@
-const { inArray } = require("drizzle-orm");
+const { and, eq, inArray, ne } = require("drizzle-orm");
 const { Router } = require("express");
 const { bookings, tours } = require("../db/schema");
 const { getStripeClient } = require("../stripe");
@@ -79,6 +79,135 @@ function createCheckoutSessionsRouter({
   clientUrl = process.env.CLIENT_URL || "http://localhost:5173",
 }) {
   const router = Router();
+
+  router.get("/:sessionId", async (request, response) => {
+    const { sessionId } = request.params;
+    if (
+      typeof sessionId !== "string" ||
+      sessionId.length > 255 ||
+      !/^cs_(test|live)_[A-Za-z0-9]+$/.test(sessionId)
+    ) {
+      response.status(400).json({ error: "Checkout session id is invalid." });
+      return;
+    }
+
+    let [booking] = await db
+      .select({
+        status: bookings.status,
+        amountTotal: bookings.amountTotal,
+        currency: bookings.currency,
+        items: bookings.items,
+        paidAt: bookings.paidAt,
+      })
+      .from(bookings)
+      .where(eq(bookings.stripeSessionId, sessionId))
+      .limit(1);
+    if (!booking) {
+      response.status(404).json({ error: "Booking not found." });
+      return;
+    }
+
+    if (booking.status === "pending") {
+      const session = await getStripe().checkout.sessions.retrieve(sessionId);
+      if (session.payment_status === "paid") {
+        if (
+          session.amount_total !== booking.amountTotal ||
+          session.currency !== booking.currency
+        ) {
+          response.status(409).json({
+            error: "Stripe payment does not match the stored booking.",
+          });
+          return;
+        }
+
+        const [updatedBooking] = await db
+          .update(bookings)
+          .set({ status: "paid", paidAt: new Date(), updatedAt: new Date() })
+          .where(
+            and(
+              eq(bookings.stripeSessionId, sessionId),
+              ne(bookings.status, "cancellation_requested"),
+            ),
+          )
+          .returning({
+            status: bookings.status,
+            amountTotal: bookings.amountTotal,
+            currency: bookings.currency,
+            items: bookings.items,
+            paidAt: bookings.paidAt,
+          });
+        if (updatedBooking) {
+          booking = updatedBooking;
+        } else {
+          const [currentBooking] = await db
+            .select({
+              status: bookings.status,
+              amountTotal: bookings.amountTotal,
+              currency: bookings.currency,
+              items: bookings.items,
+              paidAt: bookings.paidAt,
+            })
+            .from(bookings)
+            .where(eq(bookings.stripeSessionId, sessionId))
+            .limit(1);
+          if (currentBooking) {
+            booking = currentBooking;
+          }
+        }
+      }
+    }
+
+    response.set("Cache-Control", "no-store");
+    response.json(booking);
+  });
+
+  router.post("/:sessionId/cancellation-request", async (request, response) => {
+    const { sessionId } = request.params;
+    if (
+      typeof sessionId !== "string" ||
+      sessionId.length > 255 ||
+      !/^cs_(test|live)_[A-Za-z0-9]+$/.test(sessionId)
+    ) {
+      response.status(400).json({ error: "Checkout session id is invalid." });
+      return;
+    }
+
+    const [updatedBooking] = await db
+      .update(bookings)
+      .set({
+        status: "cancellation_requested",
+        updatedAt: new Date(),
+      })
+      .where(
+        and(
+          eq(bookings.stripeSessionId, sessionId),
+          eq(bookings.status, "paid"),
+        ),
+      )
+      .returning({ status: bookings.status });
+    if (updatedBooking) {
+      response.json(updatedBooking);
+      return;
+    }
+
+    const [booking] = await db
+      .select({ status: bookings.status })
+      .from(bookings)
+      .where(eq(bookings.stripeSessionId, sessionId))
+      .limit(1);
+    if (!booking) {
+      response.status(404).json({ error: "Booking not found." });
+      return;
+    }
+    if (booking.status === "cancellation_requested") {
+      response.json(booking);
+      return;
+    }
+
+    response.status(409).json({
+      error: "Only paid bookings can request cancellation.",
+    });
+  });
 
   router.post("/", async (request, response) => {
     const parsed = parseFields(request.body, checkoutFields, ["items"]);

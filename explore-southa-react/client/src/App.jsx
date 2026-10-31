@@ -52,12 +52,34 @@ function readCart() {
   }
 }
 
+function getInitialCheckoutStatus() {
+  if (window.location.pathname !== '/cart') return null
+
+  const params = new URLSearchParams(window.location.search)
+  if (params.get('checkout') === 'cancelled') {
+    return { state: 'cancelled' }
+  }
+  if (params.get('checkout') === 'success') {
+    return params.get('session_id')
+      ? { state: 'checking' }
+      : {
+          state: 'error',
+          message: 'The checkout return did not include a session reference.',
+        }
+  }
+
+  return null
+}
+
 function App() {
   const [cart, setCart] = useState(readCart)
   const [plannedTrip, setPlannedTrip] = useState(null)
   const [planVersion, setPlanVersion] = useState(0)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [checkoutError, setCheckoutError] = useState('')
+  const [checkoutStatus, setCheckoutStatus] = useState(getInitialCheckoutStatus)
+  const [cancellationLoading, setCancellationLoading] = useState(false)
+  const [cancellationError, setCancellationError] = useState('')
 
   useEffect(() => {
     try {
@@ -66,6 +88,62 @@ function App() {
       console.error('Could not save the trip cart:', error)
     }
   }, [cart])
+
+  useEffect(() => {
+    if (window.location.pathname !== '/cart') return
+
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('checkout') !== 'success') return
+
+    const sessionId = params.get('session_id')
+    if (!sessionId) return
+
+    let active = true
+    async function checkBooking() {
+      for (let attempt = 0; attempt < 15 && active; attempt += 1) {
+        try {
+          const response = await fetch(
+            `/api/checkout-sessions/${encodeURIComponent(sessionId)}`,
+            { cache: 'no-store' },
+          )
+          const result = await response.json()
+          if (!response.ok) {
+            throw new Error(result.error || `Booking check failed (${response.status}).`)
+          }
+
+          if (!active) return
+          if (result.status === 'paid') {
+            setCheckoutStatus({ state: 'paid', booking: result })
+            setCart([])
+            return
+          }
+          if (
+            result.status === 'payment_failed' ||
+            result.status === 'expired' ||
+            result.status === 'cancellation_requested'
+          ) {
+            setCheckoutStatus({ state: result.status, booking: result })
+            return
+          }
+          setCheckoutStatus({ state: 'checking', booking: result })
+        } catch (error) {
+          if (active) {
+            setCheckoutStatus({ state: 'error', message: error.message })
+          }
+          return
+        }
+
+        await new Promise((resolve) => window.setTimeout(resolve, 2000))
+      }
+
+      if (active) setCheckoutStatus({ state: 'pending' })
+    }
+
+    checkBooking()
+    return () => {
+      active = false
+    }
+  }, [])
 
   if (window.location.pathname === '/login') {
     return <Login />
@@ -156,6 +234,39 @@ function App() {
     }
   }
 
+  async function handleCancellationRequest() {
+    const sessionId = new URLSearchParams(window.location.search).get('session_id')
+    if (!sessionId) {
+      setCancellationError('The booking session reference is missing.')
+      return
+    }
+
+    setCancellationLoading(true)
+    setCancellationError('')
+    try {
+      const response = await fetch(
+        `/api/checkout-sessions/${encodeURIComponent(sessionId)}/cancellation-request`,
+        { method: 'POST' },
+      )
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(
+          result.error || `Cancellation request failed (${response.status}).`,
+        )
+      }
+
+      setCheckoutStatus((current) => ({
+        ...current,
+        state: result.status,
+        booking: { ...current.booking, status: result.status },
+      }))
+    } catch (error) {
+      setCancellationError(error.message)
+    } finally {
+      setCancellationLoading(false)
+    }
+  }
+
   const cartCount = cart.reduce((total, item) => total + item.travelers, 0)
   const tripCart = (
     <TripCart
@@ -165,6 +276,10 @@ function App() {
       onCheckout={handleCheckout}
       checkoutLoading={checkoutLoading}
       checkoutError={checkoutError}
+      checkoutStatus={checkoutStatus}
+      onRequestCancellation={handleCancellationRequest}
+      cancellationLoading={cancellationLoading}
+      cancellationError={cancellationError}
     />
   )
 
